@@ -1,0 +1,55 @@
+1. Выбрать все заказы (SALES_ORDER)
+SELECT * FROM sales_order;
+
+2. Выбрать все заказы, введенные после 1 января 2016 года 
+SELECT * FROM sales_order WHERE order_date > TO_DATE('2016-01-01', 'YYYY-MM-DD');
+
+3. Выбрать все заказы, введенные после 1 января 2016 года и до 15 июля 2016 года
+SELECT * FROM sales_order WHERE order_date BETWEEN TO_DATE('2016-01-01', 'YYYY-MM-DD') AND TO_DATE('2016-07-15', 'YYYY-MM-DD');
+
+4. Найти менеджеров с именем 'Henry'
+SELECT * FROM manager WHERE manager_first_name = 'Henry';
+
+5. Выбрать все заказы менеджеров с именем Henry
+SELECT * FROM sales_order
+JOIN manager ON sales_order.manager_id = manager.manager_id
+WHERE manager.manager_first_name = 'Henry';
+
+6. Выбрать все уникальные страны из таблицы CITY
+SELECT DISTINCT country FROM city;
+
+7. Выбрать все уникальные комбинации страны и региона из таблицы CITY
+SELECT DISTINCT region, country FROM city;
+ 
+8. Выбрать все страны из таблицы CITY с количеством городов в них.
+SELECT country, COUNT(city_name) FROM city GROUP BY country;
+
+9. Выбрать количество товаров (QTY), проданное с 1 по 30 января 2016 года.
+SELECT SUM(product_qty) FROM sales_order_line
+INNER JOIN sales_order 
+ON sales_order_line.sales_order_id = sales_order.sales_order_id
+WHERE order_date BETWEEN TO_DATE('2016-01-01', 'YYYY-MM-DD') AND TO_DATE('2016-01-30', 'YYYY-MM-DD');
+
+10. Выбрать все уникальные названия городов, регионов и стран в одной колонке
+SELECT DISTINCT * FROM
+(SELECT DISTINCT region as result FROM city
+UNION ALL 
+SELECT DISTINCT country as result FROM city
+UNION ALL
+SELECT DISTINCT city_name as result FROM city);
+
+
+
+11. Вывести имена и фамилии менеджер(ов), продавшего товаров в январе 2016 года на наибольшую сумму
+ 
+with manager_sal as (
+    SELECT manager_id, SUM(product_price * product_qty) AS order_sum
+    FROM sales_order o INNER JOIN sales_order_line ol
+    ON (o.sales_order_id = ol.sales_order_id)
+    WHERE o.order_date BETWEEN TO_DATE('2016-01-01', 'YYYY-MM-DD') AND TO_DATE('2016-01-30', 'YYYY-MM-DD')
+    GROUP BY manager_id
+)
+SELECT m.manager_first_name, m.manager_last_name, order_sum
+FROM manager_sal p 
+INNER JOIN manager m ON p.manager_id = m.manager_id
+WHERE order_sum = (SELECT MAX(order_sum) FROM manager_sal);
