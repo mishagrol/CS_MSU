@@ -1,0 +1,183 @@
+{
+    "crops": {
+        "WW": {
+            "is-winter-crop": true,
+            "cropParams": {
+                "species": [
+                    "include-from-file",
+                    "crops/wheat.json"
+                ],
+                "cultivar": [
+                    "include-from-file",
+                    "crops/wheat/winter-wheat.json"
+                ]
+            },
+            "residueParams": [
+                "include-from-file",
+                "crop-residues/wheat.json"
+            ]
+        },
+        "SX0": {
+            "is-winter-crop": false,
+            "cropParams": {
+                "species": [
+                    "include-from-file",
+                    "crops/soybean.json"
+                ],
+                "cultivar": [
+                    "include-from-file",
+                    "crops/soybean/000.json"
+                ]
+            },
+            "residueParams": [
+                "include-from-file",
+                "crop-residues/soybean.json"
+            ]
+        },
+        "ZR": {
+            "is-winter-crop": false,
+            "cropParams": {
+                "species": [
+                    "include-from-file",
+                    "crops/sugar-beet.json"
+                ],
+                "cultivar": [
+                    "include-from-file",
+                    "crops/sugar-beet/.json"
+                ]
+            },
+            "residueParams": [
+                "include-from-file",
+                "crop-residues/beet.json"
+            ]
+        }
+    },
+    "fert-params": {
+        "AN": [
+            "include-from-file",
+            "mineral-fertilisers/AN.json"
+        ],
+        "AS": [
+            "include-from-file",
+            "mineral-fertilisers/AS.json"
+        ],
+        "U": [
+            "include-from-file",
+            "mineral-fertilisers/U.json"
+        ],
+        "UAN": [
+            "include-from-file",
+            "mineral-fertilisers/UAN.json"
+        ]
+    },
+    "cropRotation": [
+        {
+            "worksteps": [
+                {
+                    "date": "2016-04-15",
+                    "type": "Sowing",
+                    "crop": [
+                        "ref",
+                        "crops",
+                        "SX0"
+                    ]
+                },
+                {
+                    "date": "2016-04-16",
+                    "type": "MineralFertilization",
+                    "amount": [
+                        50,
+                        "kg N"
+                    ],
+                    "partition": [
+                        "ref",
+                        "fert-params",
+                        "AS"
+                    ]
+                },
+                {
+                    "date": "2016-06-01",
+                    "type": "Irrigation",
+                    "amount": [
+                        5.0,
+                        "mm"
+                    ],
+                    "parameters": {
+                        "nitrateConcentration": [
+                            0.0,
+                            "mg dm-3"
+                        ],
+                        "sulfateConcentration": [
+                            0.0,
+                            "mg dm-3"
+                        ]
+                    }
+                },
+                {
+                    "date": "2016-09-10",
+                    "type": "Harvest"
+                }
+            ]
+        },
+        {
+            "worksteps": [
+                {
+                    "date": "2017-05-02",
+                    "type": "Sowing",
+                    "crop": [
+                        "ref",
+                        "crops",
+                        "ZR"
+                    ]
+                },
+                {
+                    "date": "2017-05-23",
+                    "type": "MineralFertilization",
+                    "amount": [
+                        90.0,
+                        "kg N"
+                    ],
+                    "partition": [
+                        "ref",
+                        "fert-params",
+                        "UAN"
+                    ]
+                },
+                {
+                    "date": "2017-05-25",
+                    "type": "MineralFertilization",
+                    "amount": [
+                        15.0,
+                        "kg N"
+                    ],
+                    "partition": [
+                        "ref",
+                        "fert-params",
+                        "U"
+                    ]
+                },
+                {
+                    "date": "2017-06-15",
+                    "type": "MineralFertilization",
+                    "amount": [
+                        70.0,
+                        "kg N"
+                    ],
+                    "partition": [
+                        "ref",
+                        "fert-params",
+                        "U"
+                    ]
+                },
+                {
+                    "date": "2017-11-01",
+                    "type": "Harvest"
+                }
+            ]
+        }
+    ],
+    "CropParameters": [
+        "include-from-file",
+        "general/crop.json"
+    ]
+}
